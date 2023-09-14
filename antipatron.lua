@@ -6,13 +6,11 @@ script_version_number(2)
 local samp = require 'lib.samp.events'
 local dlstatus = require('moonloader').download_status
 local inicfg = require 'inicfg'
-local encoding = require 'encoding'
-encoding.default = 'CP1251'
 
 local update_state = false
 local update_url = 'https://raw.githubusercontent.com/n0x3d/antipatron/main/update.ini'
 local update_path = getWorkingDirectory()..'/update.ini'
-local script_url = 'https://raw.githubusercontent.com/n0x3d/antipatron/main/antipatron.lua'
+local script_url = 'https://raw.githubusercontent.com/n0x3d/antipatron/main/anti-patroni-spam-2023.lua'
 local script_path = thisScript().path
 
 local hidden = false
@@ -68,5 +66,5 @@ function antipatron()
 end
 
 function unhide()
-	lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 1, 0, '') sampAddChatMessage('(антипатрон): Диалог восстановлен.', 0xEAB676) wait(1000) hidden = false end end)
+lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 1, 0, '') sampAddChatMessage('(антипатрон): Диалог восстановлен.', 0xEAB676) wait(1000) hidden = false end end)
 end
