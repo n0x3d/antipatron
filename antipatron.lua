@@ -10,7 +10,7 @@ local inicfg = require 'inicfg'
 local update_state = false
 local update_url = 'https://raw.githubusercontent.com/n0x3d/antipatron/main/update.ini'
 local update_path = getWorkingDirectory()..'/update.ini'
-local script_url = 'https://raw.githubusercontent.com/n0x3d/antipatron/main/anti-patroni-spam-2023.lua'
+local script_url = 'https://raw.githubusercontent.com/n0x3d/antipatron/main/antipatron.lua'
 local script_path = thisScript().path
 
 local hidden = false
@@ -25,7 +25,7 @@ function main()
 	sampRegisterChatCommand('unhide', unhide)
 	sampRegisterChatCommand('antipatron', antipatron)
 	
-	sampAddChatMessage('соси хуй это старая версия', 0xEAB676)
+	sampAddChatMessage('(антипатрон): Скрипт на обход флуда диалогами подгружен. Активация {FFFFFF}/antipatron{EAB676}. Автор: {FFFFFF}shmelev.fan{EAB676}.', 0xEAB676)
 	
 	downloadUrlToFile(update_url, update_path, function (id, status)
 		if status == dlstatus.STATUS_ENDDOWNLOADDATA then 
