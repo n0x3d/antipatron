@@ -17,9 +17,9 @@ local script_path = thisScript().path
 
 local hidden = false
 local toggle = false
-local warnings = {'(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): Г‚Г­ГЁГ¬Г Г­ГЁГҐ! ГЋГ·ГҐГ°ГҐГ¤Г­Г®Г© ГҐГЎГ«Г®ГЁГ¤, Г±ГЄГ®Г°ГҐГҐ ГўГ±ГҐГЈГ®, Г­Г Г·Г Г« ГґГ«ГіГ¤ Г¤ГЁГ Г«Г®ГЈГ Г¬ГЁ!',
-'(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): ГЌГ Г§Г Г°Г®Гў! ГГ¬ГҐГ«ВёГў! ГѓГ¤ГҐ, Г±ГіГЄГ , ГґГЁГЄГ± ГЇГ ГІГ°Г®Г­Г®Гў?',
-'(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): ГЏГ°ГЁГўГҐГІ, Г’Г®Г«Гј. Г‡Г­Г Гѕ, ГІГ» Г°Г Г§Г®Г·Г Г°Г®ГўГ Г­ Гў ГґГ«ГіГ¤ГҐ Г¤ГЁГ Г«Г®ГЈГ Г¬ГЁ ГЇГҐГ°ГҐГ¤Г Г·ГЁ ГЇГ°ГҐГ¤Г¬ГҐГІГ®Гў.'}
+local warnings = {'(антипатрон): Внимание! Очередной еблоид, скорее всего, начал флуд диалогами!',
+'(антипатрон): Назаров! Шмелёв! Где, сука, фикс патронов?',
+'(антипатрон): Привет, Толь. Знаю, ты разочарован в флуде диалогами передачи предметов.'}
 
 function main()
 	if not isSampLoaded() then return false end
@@ -27,13 +27,13 @@ function main()
 	sampRegisterChatCommand('unhide', unhide)
 	sampRegisterChatCommand('antipatron', antipatron)
 	
-	sampAddChatMessage('(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): Г‘ГЄГ°ГЁГЇГІ Г­Г  Г®ГЎГµГ®Г¤ ГґГ«ГіГ¤Г  Г¤ГЁГ Г«Г®ГЈГ Г¬ГЁ ГЇГ®Г¤ГЈГ°ГіГ¦ГҐГ­. ГЂГЄГІГЁГўГ Г¶ГЁГї {FFFFFF}/antipatron{EAB676}. ГЂГўГІГ®Г°: {FFFFFF}shmelev.fan{EAB676}.', 0xEAB676)
+	sampAddChatMessage('(антипатрон): Скрипт на обход флуда диалогами подгружен. Активация {FFFFFF}/antipatron{EAB676}. Автор: {FFFFFF}shmelev.fan{EAB676}.', 0xEAB676)
 	
 	downloadUrlToFile(update_url, update_path, function (id, status)
 		if status == dlstatus.STATUS_ENDDOWNLOADDATA then 
 			updateIni = inicfg.load(nil, update_path)
 			if tonumber(updateIni.update_info.version_number) > thisScript().version_num then 
-				sampAddChatMessage('(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): ГЋГЎГ­Г Г°ГіГ¦ГҐГ­Г® Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ, ГўГҐГ°Г±ГЁГї {FFFFFF}'..updateIni.update_info.version..'{EAB676}.', 0xEAB676)
+				sampAddChatMessage('(антипатрон): Обнаружено обновление, версия {FFFFFF}'..updateIni.update_info.version..'{EAB676}.', 0xEAB676)
 				update_state = true
 			end
 			os.remove(update_path)
@@ -44,28 +44,29 @@ function main()
 		wait(0)
 		if update_state then
 			downloadUrlToFile(script_url, script_path, function (id, status)
-			if status == dlstatus.STATUS_ENDDOWNLOADDATA then 
-				sampAddChatMessage('(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): Г‘ГЄГ°ГЁГЇГІ ГіГ±ГЇГҐГёГ­Г® Г®ГЎГ­Г®ГўГ«ВёГ­ Г¤Г® ГўГҐГ°Г±ГЁГЁ {FFFFFF}'..updateIni.update_info.version..'{EAB676}.', 0xEAB676)
-				thisScript():reload()
-			end
-		end)
-		break
+				if status == dlstatus.STATUS_ENDDOWNLOADDATA then 
+					sampAddChatMessage('(антипатрон): Скрипт успешно обновлён до версии {FFFFFF}'..updateIni.update_info.version..'{EAB676}.', 0xEAB676)
+					thisScript():reload()
+				end
+			end)
+			break
+		end
 	end
 end
 
 function samp.onShowDialog(id, style, title)
-	if id == 1018 and title == '{34C924}Г‚Г Г¬ ГЇГ®Г±ГІГіГЇГЁГ«Г® ГЇГ°ГҐГ¤Г«Г®Г¦ГҐГ­ГЁГҐ' and toggle and not hidden then
+	if id == 1018 and title == '{34C924}Вам поступило предложение' and toggle and not hidden then
 		sampAddChatMessage(warnings[math.random(0,2)], 0xEAB676)
-		sampAddChatMessage('(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): Г„ГЁГ Г«Г®ГЈ Г±ГЄГ°Г»ГІ. Г—ГІГ®ГЎГ» ГўГҐГ°Г­ГіГІГј ГҐГЈГ® ГўГўГҐГ¤ГЁГІГҐ {FFFFFF}/unhide.{EAB676}', 0xEAB676)
+		sampAddChatMessage('(антипатрон): Диалог скрыт. Чтобы вернуть его введите {FFFFFF}/unhide.{EAB676}', 0xEAB676)
 		lua_thread.create(function() wait(math.random(100, 300)) sampSetDialogClientside(true) sampCloseCurrentDialogWithButton(1) end)
 		hidden = true
 	end		
 end
 
 function antipatron()
-	if not toggle then sampAddChatMessage('(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): ГЂГ­ГІГЁ-ГґГ«ГіГ¤ Г¤ГЁГ Г«Г®ГЈГ Г¬ГЁ ГЇГҐГ°ГҐГ¤Г Г·ГЁ {34C924}Г ГЄГІГЁГўГЁГ°Г®ГўГ Г­{EAB676}.', 0xEAB676) toggle = true else sampAddChatMessage('(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): ГЂГ­ГІГЁ-ГґГ«ГіГ¤ Г¤ГЁГ Г«Г®ГЈГ Г¬ГЁ ГЇГҐГ°ГҐГ¤Г Г·ГЁ {BF0000}Г¤ГҐГ ГЄГІГЁГўГЁГ°Г®ГўГ Г­{EAB676}.', 0xEAB676) toggle = false end
+	if not toggle then sampAddChatMessage('(антипатрон): Анти-флуд диалогами передачи {34C924}активирован{EAB676}.', 0xEAB676) toggle = true else sampAddChatMessage('(антипатрон): Анти-флуд диалогами передачи {BF0000}деактивирован{EAB676}.', 0xEAB676) toggle = false end
 end
 
 function unhide()
-lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 1, 0, '') sampAddChatMessage('(Г Г­ГІГЁГЇГ ГІГ°Г®Г­): Г„ГЁГ Г«Г®ГЈ ГўГ®Г±Г±ГІГ Г­Г®ГўГ«ГҐГ­.', 0xEAB676) wait(1000) hidden = false end end)
+lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 1, 0, '') sampAddChatMessage('(антипатрон): Диалог восстановлен.', 0xEAB676) wait(1000) hidden = false end end)
 end
