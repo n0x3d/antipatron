@@ -68,5 +68,5 @@ function antipatron()
 end
 
 function unhide()
-lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 1, 0, '') sampAddChatMessage('(антипатрон): Диалог восстановлен.', 0xEAB676) wait(1000) hidden = false end end)
+	lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 1, 0, '') sampAddChatMessage('(антипатрон): Диалог восстановлен.', 0xEAB676) wait(1000) hidden = false end end)
 end
