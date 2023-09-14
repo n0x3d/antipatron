@@ -1,7 +1,7 @@
 script_name('antipatron')
 script_author('shmelev.fan')
-script_version('0.1.1-alpha')
-script_version_number(2)
+script_version('0.1.2-alpha')
+script_version_number(3)
 
 local samp = require 'lib.samp.events'
 local dlstatus = require('moonloader').download_status
@@ -56,7 +56,7 @@ function samp.onShowDialog(id, style, title)
 	if id == 1018 and title == '{34C924}Вам поступило предложение' and toggle and not hidden then
 		sampAddChatMessage(warnings[math.random(0,2)], 0xEAB676)
 		sampAddChatMessage('(антипатрон): Диалог скрыт. Чтобы вернуть его введите {FFFFFF}/unhide.{EAB676}', 0xEAB676)
-		lua_thread.create(function() wait(math.random(100, 300)) sampSetDialogClientside(true) sampCloseCurrentDialogWithButton(1) end)
+		lua_thread.create(function() wait(math.random(50, 100)) sampSetDialogClientside(true) sampCloseCurrentDialogWithButton(1) end)
 		hidden = true
 	end		
 end
@@ -66,5 +66,5 @@ function antipatron()
 end
 
 function unhide()
-lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 1, 0, '') sampAddChatMessage('(антипатрон): Диалог восстановлен.', 0xEAB676) wait(1000) hidden = false end end)
+lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 0, 0, '') sampAddChatMessage('(антипатрон): Диалог восстановлен.', 0xEAB676) wait(500) hidden = false end end)
 end
