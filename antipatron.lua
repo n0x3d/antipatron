@@ -1,7 +1,7 @@
 script_name('antipatron')
 script_author('shmelev.fan')
-script_version('0.1.3-alpha')
-script_version_number(4)
+script_version('0.1.4-alpha')
+script_version_number(5)
 
 local samp = require 'lib.samp.events'
 local dlstatus = require('moonloader').download_status
@@ -60,8 +60,4 @@ function samp.onShowDialog(id, style, title)
 		lua_thread.create(function() wait(math.random(50, 100)) sampSetDialogClientside(true) sampCloseCurrentDialogWithButton(1) end)
 		hidden = true
 	end		
-end
-
-function samp.onSendSpawn()
-	if hidden then hidden = not hidden sampAddChatMessage('(антипатрон): Вы умерли. Предыдущий диалог закрыт автоматически.', 0xEAB676) end
 end
