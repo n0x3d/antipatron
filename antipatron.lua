@@ -1,7 +1,7 @@
 script_name('antipatron')
 script_author('shmelev.fan')
-script_version('0.1.2-alpha')
-script_version_number(3)
+script_version('0.1.3-alpha')
+script_version_number(4)
 
 local samp = require 'lib.samp.events'
 local dlstatus = require('moonloader').download_status
@@ -22,8 +22,8 @@ local warnings = {'(антипатрон): Внимание! Очередной еблоид, скорее всего, начал
 function main()
 	if not isSampLoaded() then return false end
 	repeat wait(200) until isSampAvailable()
-	sampRegisterChatCommand('unhide', unhide)
-	sampRegisterChatCommand('antipatron', antipatron)
+	sampRegisterChatCommand('unhide', function() lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 0, 0, '') sampAddChatMessage('(антипатрон): Диалог закрыт.', 0xEAB676) wait(500) hidden = false end end) end)
+	sampRegisterChatCommand('antipatron', function() if not toggle then sampAddChatMessage('(антипатрон): Анти-флуд диалогами передачи {34C924}активирован{EAB676}.', 0xEAB676) toggle = true else sampAddChatMessage('(антипатрон): Анти-флуд диалогами передачи {BF0000}деактивирован{EAB676}.', 0xEAB676) toggle = false end end)
 	
 	sampAddChatMessage('(антипатрон): Скрипт на обход флуда диалогами подгружен. Активация {FFFFFF}/antipatron{EAB676}. Автор: {FFFFFF}shmelev.fan{EAB676}.', 0xEAB676)
 	
@@ -53,18 +53,15 @@ function main()
 end
 
 function samp.onShowDialog(id, style, title)
-	if id == 1018 and title == '{34C924}Вам поступило предложение' and toggle and not hidden then
-		sampAddChatMessage(warnings[math.random(0,2)], 0xEAB676)
+	if hidden then hidden = not hidden sampAddChatMessage('(антипатрон): Сервер показал вам другой диалог. Предыдущий диалог закрыт автоматически.', 0xEAB676) end
+	if id == 1018 and title == '{34C924}Вам поступило предложение' and toggle then
+		sampAddChatMessage(warnings[math.random(1,3)], 0xEAB676)
 		sampAddChatMessage('(антипатрон): Диалог скрыт. Чтобы вернуть его введите {FFFFFF}/unhide.{EAB676}', 0xEAB676)
 		lua_thread.create(function() wait(math.random(50, 100)) sampSetDialogClientside(true) sampCloseCurrentDialogWithButton(1) end)
 		hidden = true
 	end		
 end
 
-function antipatron()
-	if not toggle then sampAddChatMessage('(антипатрон): Анти-флуд диалогами передачи {34C924}активирован{EAB676}.', 0xEAB676) toggle = true else sampAddChatMessage('(антипатрон): Анти-флуд диалогами передачи {BF0000}деактивирован{EAB676}.', 0xEAB676) toggle = false end
-end
-
-function unhide()
-lua_thread.create(function() if hidden then sampSendDialogResponse(1018, 0, 0, '') sampAddChatMessage('(антипатрон): Диалог восстановлен.', 0xEAB676) wait(500) hidden = false end end)
+function samp.onSendSpawn()
+	if hidden then hidden = not hidden sampAddChatMessage('(антипатрон): Вы умерли. Предыдущий диалог закрыт автоматически.', 0xEAB676) end
 end
